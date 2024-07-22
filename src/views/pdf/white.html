@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Detection</title>
+    <style>
+        .component {
+            height: 400px; /* 假设组件高度超过窗口高度 */
+            margin: 20px 0;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="component" id="component1">Component 1</div>
+    <div class="component" id="component2">Component 2</div>
+    <div class="component" id="component3">Component 3</div>
+
+    <script>
+        window.addEventListener('scroll', function(e) {
+            const components = document.querySelectorAll('.component');
+            const viewportHeight = window.innerHeight;
+            console.log(`Viewport height: ${viewportHeight}`);
+            let maxVisibleHeight = 0;
+            let currentComponent = null;
+            console.log(`e.target.scrollTop: ${}`);
+
+            components.forEach(component => {
+                const rect = component.getBoundingClientRect();
+                const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+                if (visibleHeight > maxVisibleHeight) {
+                    maxVisibleHeight = visibleHeight;
+                    currentComponent = component;
+                }
+            });
+
+            if (currentComponent) {
+                console.log(`Current component: ${currentComponent.id}`);
+            }
+        });
+    </script>
+</body>
+</html>
