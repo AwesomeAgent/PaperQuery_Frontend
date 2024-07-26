@@ -23,12 +23,8 @@ const Login = async () => {
     password: password.value,
   }
 
-  const formData = new FormData()
-  formData.append('username', user.username)
-  formData.append('password', user.password)
-
   try {
-    await login(formData)
+    await login(user)
     ElNotification({
       title: '登录成功',
       type: 'success',

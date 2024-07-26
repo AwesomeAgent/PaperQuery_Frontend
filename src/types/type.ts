@@ -48,6 +48,19 @@ export interface KnowledgeResponse {
 export interface Document {
   documentID: string
   documentName: string
+  documentStatus: number
   documentTags: Array<string>
   vectorNum: number
+  createTime: number
+}
+
+export interface ChatRequest {
+  input: string
+  ref: {
+    knowledgeID: string
+    documentID: string
+    page: number
+    selectedText: string
+  }
+  context: string
 }

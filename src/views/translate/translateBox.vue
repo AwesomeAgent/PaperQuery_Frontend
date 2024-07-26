@@ -15,7 +15,10 @@ import { useStore } from 'vuex'
 
 const store = useStore()
 
-const selectedText = computed(() => store.getters.selectedText)
+// 显示翻译文字
+const selectedText = computed(() => {
+  return store.getters.translatedText
+})
 </script>
 
 <style scoped>

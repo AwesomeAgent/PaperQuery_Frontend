@@ -48,7 +48,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/library/knowledge.vue'),
       },
       {
-        path: 'pdfInfo/:documentID',
+        path: 'pdfInfo/:knowledgeID/:documentID',
         name: 'pdfInfo',
         component: pdfInfo,
       },

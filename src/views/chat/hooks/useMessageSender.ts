@@ -1,41 +1,26 @@
 // src/hooks/useMessageSender.ts
-import { ref } from 'vue'
 import { Store } from 'vuex'
-
-interface Message {
-  text: string
-  sender: 'user' | 'gpt'
-}
+import { askQuestion } from '@/api/data'
+import { type ChatRequest } from '@/types/type'
 
 export function useMessageSender(store: Store<any>) {
-  const inputValue = ref('')
-
-  const sendMessage = async (text: string) => {
-    if (text) {
-      const message: Message = { text, sender: 'user' }
-      store.dispatch('addMessage', message)
-      // 模拟向后端发送消息请求
-      async function sendMessage(text: string) {
-        const response: Message = { text: text, sender: 'gpt' }
-        // 延时 1s 模拟后端处理
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        return response
+  const sendMessage = async (chatRequest: ChatRequest) => {
+    // 添加消息到消息列表
+    store.dispatch('addMessage', { text: chatRequest.input, sender: 'user' })
+    try {
+      // 问答助手 发送消息
+      const resp = await askQuestion(chatRequest)
+      if (resp) {
+        // 添加消息到消息列表
+        store.dispatch('addMessage', { text: resp.data.output, sender: 'gpt' })
+        store.dispatch('updateContext', resp.data.context)
       }
-      const response = await sendMessage(text)
-      store.dispatch('addMessage', response)
-    }
-  }
-
-  const handleFormSubmit = () => {
-    if (inputValue.value) {
-      sendMessage(inputValue.value)
-      inputValue.value = ''
+    } catch (error) {
+      console.error(error)
     }
   }
 
   return {
-    inputValue,
-    handleFormSubmit,
     sendMessage,
   }
 }

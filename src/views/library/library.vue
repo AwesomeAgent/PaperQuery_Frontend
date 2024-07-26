@@ -83,6 +83,7 @@
                     v-model="newCard.knowledgeName"
                     class="col-span-3"
                     required
+                    autocomplete="off"
                   />
                 </div>
                 <div class="grid grid-cols-4 items-center gap-4">
@@ -91,6 +92,7 @@
                     id="libDes"
                     v-model="newCard.knowledgeDescription"
                     class="col-span-3"
+                    autocomplete="off"
                   />
                 </div>
               </div>
@@ -255,7 +257,7 @@ import {
   type Knowledge,
   type KnowledgeListResponse,
   type KnowledgeResponse,
-} from '@/types/api'
+} from '@/types/type'
 
 import { type User } from '@/stores'
 import { ElNotification } from 'element-plus'
@@ -312,42 +314,34 @@ const SaveEvent = async () => {
   newCard.value.knowledgeDescription = ''
   // 知识名不能为空
   if (knowledgeName === '') {
-    ElNotification.error('知识名不能为空')
+    ElNotification.error('知识名称不能为空')
     return
   }
-  const user = store.getters.getUser as User
-  const token = `${user.tokenData.token_type} ${user.tokenData.access_token}`
-  const knowledgeResp = (await getKnowledgeList(token)) as KnowledgeListResponse
-  if (knowledgeResp.status_code == 401) {
-    ElNotification.error('Token过期，请重新登录')
-    return
-  }
-  const knowList = knowledgeResp.data.knowledgeList
-  for (let i = 0; i < knowList.length; i++) {
-    if (knowList[i].knowledgeName === knowledgeName) {
-      ElNotification.error('知识名已存在')
-      return
-    }
-  }
+  // TODO: 处理服务器500错误
   try {
     const knowResp = (await createKnowledge(
-      token,
       knowledgeName,
       knowledgeDescription,
     )) as KnowledgeResponse
 
-    if (knowResp.status_code === 200) {
+    if (knowResp) {
       // 添加新创建的知识卡片到列表头
       knowCardList.value?.unshift(knowResp.data)
       ElNotification.success('知识创建成功')
-    } else {
-      console.error('Failed to crate knowledge', knowResp.msg)
     }
-  } catch (error) {
-    console.error('Error creating knowledge', error)
+  } catch (error: any) {
+    if (error.message == '401') {
+      const router = useRouter()
+      ElNotification.error('Token过期，请重新登录')
+      router.push('/login')
+    } else if (error.message == '409') {
+      ElNotification.error('知识名称重复')
+    }
   }
 }
 
+// 编辑知识卡片
+// TODO: 编辑知识卡片
 const EditEvent = async (
   knowledgeID: string,
   knowledgeName: string,

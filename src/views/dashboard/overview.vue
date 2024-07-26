@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { getLibraryInfo } from '@/api/data'
-import type { LibraryInfoResponse, LibraryInfo } from '@/types/api'
+import type { LibraryInfoResponse, LibraryInfo } from '@/types/type'
 
 const libInfo = ref<LibraryInfo | null>(null)
 

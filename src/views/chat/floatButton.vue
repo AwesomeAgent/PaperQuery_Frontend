@@ -15,11 +15,10 @@
           class="p-1 cursor-pointer hover:bg-gray-100"
           @click="selectCommand(command)"
         >
-          <el-button type="default" class="w-full">{{ command }}</el-button>
-          <!-- {{ command }} -->
+          <Button variant="outline" class="w-full">{{ command }}</Button>
         </div>
       </el-card>
-      <el-input
+      <Input
         v-model="inputValue"
         placeholder="输入你的问题..."
         class="w-full"
@@ -27,73 +26,89 @@
         @keyup.enter="handleInputSubmit"
       />
     </div>
-    <el-button type="primary" class="ml-4 px-4 py-2" @click="handleInputSubmit">
-      发送
-    </el-button>
+    <Button
+      variant="default"
+      class="ml-4 px-4 py-2"
+      :disabled="!inputValue || sending"
+      @click="handleInputSubmit"
+      >发送</Button
+    >
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import { ref } from 'vue'
-import { ElInput, ElButton } from 'element-plus'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { useMessageSender } from '@/views/chat/hooks/useMessageSender'
 import { useStore } from 'vuex'
+import { defineProps } from 'vue'
+import { type ChatRequest } from '@/types/type'
 
-export default {
-  name: 'FloatingInput',
-  components: {
-    ElInput,
-    ElButton,
+const props = defineProps({
+  isVisible: {
+    type: Boolean,
+    required: true,
   },
-  props: {
-    isVisible: {
-      type: Boolean,
-      required: true,
-    },
-    selectedText: {
-      type: String,
-      required: true,
-    },
+  selectedText: {
+    type: String,
+    required: true,
   },
-  setup() {
-    const store = useStore()
-    const { sendMessage } = useMessageSender(store)
-
-    const inputValue = ref('')
-    const showCommandList = ref(false)
-    const commands = ref(['翻译', '引用'])
-
-    const handleInputSubmit = () => {
-      if (inputValue.value.trim()) {
-        console.log(`Sending message: ${inputValue.value}`)
-        sendMessage(inputValue.value)
-        inputValue.value = ''
-        showCommandList.value = false
-      }
-    }
-
-    const checkForCommand = () => {
-      if (inputValue.value.includes('/')) {
-        showCommandList.value = true
-      } else {
-        showCommandList.value = false
-      }
-    }
-
-    const selectCommand = (command) => {
-      inputValue.value = command
-      showCommandList.value = false
-    }
-
-    return {
-      inputValue,
-      handleInputSubmit,
-      showCommandList,
-      commands,
-      checkForCommand,
-      selectCommand,
-    }
+  knowledgeID: {
+    type: String,
+    required: true,
   },
+  documentID: {
+    type: String,
+    required: true,
+  },
+  page: {
+    type: Number,
+    required: true,
+  },
+})
+
+const store = useStore()
+const { sendMessage } = useMessageSender(store)
+
+const inputValue = ref('')
+const showCommandList = ref(false)
+const commands = ref(['翻译', '引用'])
+const sending = ref(false)
+
+const handleInputSubmit = () => {
+  // console.log(props.page)
+  if (inputValue.value.trim()) {
+    const chatRequest: ChatRequest = {
+      input: inputValue.value.trim(),
+      ref: {
+        knowledgeID: props.knowledgeID,
+        documentID: props.documentID,
+        selectedText: props.selectedText,
+        page: props.page,
+      },
+      context: store.state.context,
+    }
+    sending.value = true
+    sendMessage(chatRequest).then(() => {
+      sending.value = false
+    })
+    inputValue.value = ''
+    showCommandList.value = false
+  }
+}
+
+const checkForCommand = () => {
+  if (inputValue.value.includes('/')) {
+    showCommandList.value = true
+  } else {
+    showCommandList.value = false
+  }
+}
+
+const selectCommand = (command: any) => {
+  inputValue.value = command
+  showCommandList.value = false
 }
 </script>
 

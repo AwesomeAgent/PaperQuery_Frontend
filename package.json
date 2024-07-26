@@ -26,6 +26,7 @@
   "dependencies": {
     "@bassist/progress": "^0.2.2",
     "@bassist/utils": "^0.14.0",
+    "@kangc/v-md-editor": "^2.3.18",
     "@tabler/icons-vue": "^3.10.0",
     "@tanstack/vue-table": "^8.19.2",
     "@tato30/vue-pdf": "^1.10.0",
@@ -35,6 +36,7 @@
     "clsx": "^2.1.1",
     "element-plus": "^2.7.7",
     "lucide-vue-next": "^0.407.0",
+    "markdown-it": "^14.1.0",
     "pdfjs-dist": "^2.0.943",
     "pinia": "^2.1.7",
     "primevue": "^4.0.0",
@@ -45,6 +47,7 @@
     "vue": "^3.4.15",
     "vue-pdf-embed": "^2.0.4",
     "vue-router": "^4.2.5",
+    "vue-showdown": "^4.2.0",
     "vue-virtual-scroll-list": "^2.3.5",
     "vue3-pdfjs": "^0.1.6",
     "vue3-virtual-scroll-list": "^0.2.1",
