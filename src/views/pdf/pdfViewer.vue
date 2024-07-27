@@ -37,7 +37,7 @@ const page = ref(1)
 
 // 监听容器的滚动状态
 const container = ref(null)
-const { arrivedState } = useScroll(container)
+const { y, arrivedState } = useScroll(container)
 
 // 判断是否已经到达底部 防止一次滚动就换页
 const bottomReachedOnce = ref(false)
@@ -48,12 +48,14 @@ const handleWheel = debounce((event: any) => {
   if (event.deltaY > 0 && arrivedState.bottom) {
     if (bottomReachedOnce.value) {
       page.value = Math.min(page.value + 1, pages.value)
+      y.value = 0
     } else {
       bottomReachedOnce.value = true
     }
   } else if (event.deltaY < 0 && arrivedState.top) {
     if (topReachedOnce.value) {
       page.value = Math.max(page.value - 1, 1)
+      y.value = 0
     } else {
       topReachedOnce.value = true
     }
@@ -111,10 +113,12 @@ onBeforeUnmount(() => {
 
 const handleButtonLastPage = () => {
   page.value = Math.max(page.value - 1, 1)
+  y.value = 0
 }
 
 const handleButtonNextPage = () => {
   page.value = Math.min(page.value + 1, pages.value)
+  y.value = 0
 }
 </script>
 
