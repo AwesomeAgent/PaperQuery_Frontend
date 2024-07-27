@@ -35,7 +35,6 @@ const handleButtonClick = () => {
 const scrollToBottom = () => {
   nextTick(() => {
     if (messagecontainer.value) {
-      console.log('scrollToBottom')
       messagecontainer.value.scrollTop = messagecontainer.value.scrollHeight
     }
   })
@@ -45,9 +44,7 @@ const scrollToBottom = () => {
 watch(
   ifBottom,
   (newValue) => {
-    console.log('ifBottom changed:', newValue)
     nextTick(() => {
-      console.log('nextTick callback')
       scrollToBottom()
     })
   },
@@ -56,7 +53,6 @@ watch(
 
 // 监听消息列表变化 滑动到底部
 watch(store.getters.messageList, (newValue) => {
-  console.log('messageList changed:', newValue)
   if (newValue) {
     scrollToBottom()
   }

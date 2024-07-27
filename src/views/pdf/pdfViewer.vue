@@ -3,8 +3,11 @@ import { VuePDF, usePDF } from '@tato30/vue-pdf'
 import '@tato30/vue-pdf/style.css'
 import FloatingButton from '@/views/chat/floatButton.vue'
 import { useStore } from 'vuex'
-
+import { useScroll } from '@vueuse/core'
 import { translateText } from '@/api/data'
+import { debounce } from 'lodash'
+import Button from '@/components/ui/button/Button.vue'
+import Input from '@/components/ui/input/Input.vue'
 
 const props = defineProps({
   knowledgeID: {
@@ -20,23 +23,61 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 
 const { pdf, pages } = usePDF(
   `${apiBaseUrl}/document/getFile?documentID=${props.documentID}&knowledgeID=${props.knowledgeID}`,
-  // '/file/ditto.pdf',
 )
+const store = useStore()
+
+// 用户选中文本
 const selectedText = ref('')
+
+// 是否显示浮动按钮
 const isFloatingButtonVisible = ref(true)
 
-const store = useStore()
+// 当前页码
+const page = ref(1)
+
+// 监听容器的滚动状态
+const container = ref(null)
+const { arrivedState } = useScroll(container)
+
+// 判断是否已经到达底部 防止一次滚动就换页
+const bottomReachedOnce = ref(false)
+const topReachedOnce = ref(false)
+
+// 滚动事件 防抖处理 防止滚动过快一次换多页
+const handleWheel = debounce((event: any) => {
+  if (event.deltaY > 0 && arrivedState.bottom) {
+    if (bottomReachedOnce.value) {
+      page.value = Math.min(page.value + 1, pages.value)
+    } else {
+      bottomReachedOnce.value = true
+    }
+  } else if (event.deltaY < 0 && arrivedState.top) {
+    if (topReachedOnce.value) {
+      page.value = Math.max(page.value - 1, 1)
+    } else {
+      topReachedOnce.value = true
+    }
+  }
+}, 300)
+
+// 监听滚动状态 重置底部和顶部状态
+watch(arrivedState, (newValue) => {
+  if (!newValue.bottom) {
+    bottomReachedOnce.value = false
+  }
+  if (!newValue.top) {
+    topReachedOnce.value = false
+  }
+})
 
 // 发送翻译请求
 const getSelectedText = async () => {
   const selection = window.getSelection()
   if (selection && selection.toString().length > 0) {
     let text = selection.toString()
-    // 删除 text 里面的换行符
-    // text.replaceAll('/\n', ' ')
-    selectedText.value = selection.toString()
+    selectedText.value = text
     try {
-      const res = await translateText(selectedText.value)
+      const res = await translateText(text)
       if (res) {
         text = res.data.text
       }
@@ -52,15 +93,11 @@ const handleMouseUp = () => {
   getSelectedText()
 }
 
-const handleMouseDown = () => {
-  // setFloatingButtonVisible(false)
-}
-
 onMounted(() => {
   const div1 = document.getElementById('div1')
   if (div1) {
     div1.addEventListener('mouseup', handleMouseUp)
-    div1.addEventListener('mousedown', handleMouseDown)
+    div1.addEventListener('wheel', handleWheel)
   }
 })
 
@@ -68,7 +105,7 @@ onBeforeUnmount(() => {
   const div1 = document.getElementById('div1')
   if (div1) {
     div1.removeEventListener('mouseup', handleMouseUp)
-    div1.removeEventListener('mousedown', handleMouseDown)
+    div1.removeEventListener('wheel', handleWheel)
   }
 })
 
@@ -79,15 +116,20 @@ const handleButtonLastPage = () => {
 const handleButtonNextPage = () => {
   page.value = Math.min(page.value + 1, pages.value)
 }
-
-const page = ref(1)
 </script>
 
 <template>
-  <button @click="handleButtonLastPage">上一页</button>
-  <button @click="handleButtonNextPage">下一页</button>
-  <div id="div1" class="pdf-container">
+  <div class="flex flex-row w-full">
+    <div class="flex items-center justify-center w-full">
+      <Button variant="ghost" @click="handleButtonLastPage">《</Button>
+      <Input class="w-10 h-5 text-sm font-bold" :value="`${page}`" />
+      <Button variant="ghost" @click="handleButtonNextPage">》</Button>
+    </div>
+  </div>
+
+  <div id="div1" ref="container" class="pdf-container">
     <VuePDF :pdf="pdf" :page="page" text-layer fit-parent />
+    <!-- <div class="flex items-center justify-center mb-10 w-full"></div> -->
   </div>
   <FloatingButton
     :is-visible="isFloatingButtonVisible"
@@ -110,6 +152,6 @@ const page = ref(1)
   align-items: center;
   overflow-y: auto;
   overflow-x: auto;
-  max-height: 100vh; /* Adjust height as needed */
+  max-height: 100vh;
 }
 </style>

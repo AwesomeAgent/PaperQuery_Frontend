@@ -35,9 +35,7 @@ messages.value.push({
   sender: 'bot',
 })
 
-onMounted(() => {
-  console.log('你好')
-})
+onMounted(() => {})
 
 onUnmounted(() => {
   // 清空消息列表

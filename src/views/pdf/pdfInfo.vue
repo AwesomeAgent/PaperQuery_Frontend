@@ -44,15 +44,11 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from '@/components/ui/resizable'
-import { useStore } from 'vuex'
 
 const route = useRoute()
-const store = useStore()
 
 const knowledgeID = route.params.knowledgeID as string
 const documentID = route.params.documentID as string
 
-onMounted(async () => {
-  console.log(`context:${store.getters.context}`)
-})
+onMounted(async () => {})
 </script>

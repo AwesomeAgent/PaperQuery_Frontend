@@ -76,6 +76,7 @@ const showCommandList = ref(false)
 const commands = ref(['翻译', '引用'])
 const sending = ref(false)
 
+// 发送消息
 const handleInputSubmit = () => {
   // console.log(props.page)
   if (inputValue.value.trim()) {
