@@ -23,6 +23,9 @@ export const store = createStore({
     addMessage(state, message) {
       state.messageList.push(message)
     },
+    appendMessageByIndex(state, { index, text }) {
+      state.messageList[index].text += text
+    },
     clearMessage(state) {
       state.messageList = []
     },

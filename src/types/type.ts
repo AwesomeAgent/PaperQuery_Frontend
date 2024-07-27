@@ -55,7 +55,7 @@ export interface Document {
 }
 
 export interface ChatRequest {
-  input: string
+  question: string
   ref: {
     knowledgeID: string
     documentID: string

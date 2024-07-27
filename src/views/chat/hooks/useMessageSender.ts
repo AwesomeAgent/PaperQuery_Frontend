@@ -1,21 +1,15 @@
 // src/hooks/useMessageSender.ts
 import { Store } from 'vuex'
-import { askQuestion } from '@/api/data'
+import { askQuestionStream } from '@/api/data'
 import { type ChatRequest } from '@/types/type'
 
 export function useMessageSender(store: Store<any>) {
   const sendMessage = async (chatRequest: ChatRequest) => {
     // 添加消息到消息列表
-    store.dispatch('addMessage', { text: chatRequest.input, sender: 'user' })
+    store.dispatch('addMessage', { text: chatRequest.question, sender: 'user' })
     try {
       // 问答助手 发送消息
-      // const resp = await askQuestion(chatRequest)
-      // if (resp) {
-      //   // 添加消息到消息列表
-      //   store.dispatch('addMessage', { text: resp.data.output, sender: 'gpt' })
-      //   store.dispatch('updateContext', resp.data.context)
-      // }
-      store.dispatch('addMessage', { text: '哇哈哈哈哈哈哈', sender: 'gpt' })
+      const resp = await askQuestionStream(chatRequest, store)
     } catch (error) {
       console.error(error)
     }

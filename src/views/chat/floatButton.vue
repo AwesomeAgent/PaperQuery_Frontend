@@ -81,7 +81,7 @@ const handleInputSubmit = () => {
   // console.log(props.page)
   if (inputValue.value.trim()) {
     const chatRequest: ChatRequest = {
-      input: inputValue.value.trim(),
+      question: inputValue.value.trim(),
       ref: {
         knowledgeID: props.knowledgeID,
         documentID: props.documentID,

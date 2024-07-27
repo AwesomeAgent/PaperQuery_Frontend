@@ -99,7 +99,7 @@ onMounted(() => {
   const div1 = document.getElementById('div1')
   if (div1) {
     div1.addEventListener('mouseup', handleMouseUp)
-    div1.addEventListener('wheel', handleWheel)
+    div1.addEventListener('wheel', handleWheel, { passive: true })
   }
 })
 

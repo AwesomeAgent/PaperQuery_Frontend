@@ -242,3 +242,60 @@ export const askQuestion = async (req: ChatRequest) => {
     throw new Error(e.response.data.msg)
   }
 }
+
+// 获取gpt流式消息 API接口
+export const askQuestionStream = async (req: ChatRequest, store: any) => {
+  try {
+    let token = localStorage.getItem('token')
+    if (token) {
+      token = `Bearer ${token}`
+    }
+    const url = import.meta.env.VITE_API_BASE_URL
+    const response = await fetch(`${url}/chat/generate_flow`, {
+      method: 'POST',
+      body: JSON.stringify(req),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token as string,
+      },
+    })
+
+    if (!response.body) {
+      throw new Error('Network response was not ok')
+    }
+
+    const reader = response.body?.getReader()
+    const decoder = new TextDecoder('utf-8')
+    let result = ''
+    const message = { text: '', sender: 'bot' }
+    store.commit('addMessage', message)
+    const messageIndex = store.state.messageList.length - 1
+    while (true) {
+      const { done, value } = await reader!.read()
+      if (done) break
+      const chunk = parsePack(decoder.decode(value, { stream: true })) as any
+      // console.log(chunk)
+      // 不断更新消息到消息列表
+      store.commit('appendMessageByIndex', {
+        index: messageIndex,
+        text: chunk,
+      })
+    }
+    return result
+  } catch (e: any) {
+    throw new Error(e.message || 'Error fetching stream')
+  }
+}
+
+// 解析消息格式
+const parsePack = (str: string) => {
+  const dataPattern = /"data": "(.*?)"/g
+  let match
+  const dataList = []
+
+  while ((match = dataPattern.exec(str)) !== null) {
+    dataList.push(match[1])
+  }
+
+  return dataList.join('')
+}
