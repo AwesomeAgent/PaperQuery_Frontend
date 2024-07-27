@@ -15,9 +15,6 @@ import './assets/index.css'
 
 // 创建 Pinia 实例
 // const pinia = createPinia()
-
-import { VueShowdownPlugin } from 'vue-showdown'
-
 /**
  * Pinia 支持功能扩展，例如本地持久化功能
  *
@@ -30,14 +27,6 @@ import { VueShowdownPlugin } from 'vue-showdown'
 // pinia.use(piniaPluginPersistedstate)
 
 createApp(App)
-  .use(VueShowdownPlugin, {
-    // 设置 showdown 默认 flavor
-    flavor: 'github',
-    // 设置 showdown 默认 options （会覆盖上面 flavor 的 options）
-    options: {
-      emoji: true,
-    },
-  })
   // .use(pinia) // 启用 Pinia
   .use(store) // 启用 Vuex
   .use(router) // 启用 Vue Router

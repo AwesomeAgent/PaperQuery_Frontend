@@ -289,12 +289,19 @@ export const askQuestionStream = async (req: ChatRequest, store: any) => {
 
 // 解析消息格式
 const parsePack = (str: string) => {
-  const dataPattern = /"data": "(.*?)"/g
+  const dataPattern = /({.*?})/g
   let match
   const dataList = []
 
   while ((match = dataPattern.exec(str)) !== null) {
-    dataList.push(match[1])
+    try {
+      const json = JSON.parse(match[1])
+      if (json.data) {
+        dataList.push(json.data)
+      }
+    } catch (e) {
+      console.log('JSON parse error: ', e)
+    }
   }
 
   return dataList.join('')
