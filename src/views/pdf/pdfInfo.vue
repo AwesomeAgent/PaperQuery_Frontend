@@ -1,22 +1,26 @@
 <template>
   <div class="flex h-screen">
-    <ResizablePanelGroup id="group_1" direction="horizontal" class="w-full">
-      <ResizablePanel id="panel-1" :min-size="60">
-        <div class="w-full h-screen">
+    <ResizablePanelGroup
+      id="group_1"
+      direction="horizontal"
+      class="w-full h-full"
+    >
+      <ResizablePanel id="panel-1" :min-size="60" class="h-full">
+        <div class="w-full h-full">
           <pdfViewer :knowledge-i-d="knowledgeID" :document-i-d="documentID" />
         </div>
       </ResizablePanel>
       <ResizableHandle with-handle />
-      <ResizablePanel id="panel-2">
-        <div class="flex flex-col w-full h-screen">
-          <ResizablePanelGroup id="group_2" direction="vertical">
-            <ResizablePanel id="panel-2-1" :min-size="30">
+      <ResizablePanel id="panel-2" class="h-full">
+        <div class="flex flex-col w-full h-full">
+          <ResizablePanelGroup id="group_2" direction="vertical" class="h-full">
+            <ResizablePanel id="panel-2-1" :min-size="30" class="h-full">
               <div class="flex flex-1 h-full">
                 <translateBox />
               </div>
             </ResizablePanel>
             <ResizableHandle with-handle />
-            <ResizablePanel id="panel-2-2">
+            <ResizablePanel id="panel-2-2" :min-size="50" class="h-full">
               <div class="flex flex-1 h-full">
                 <chat class="flex-1" />
               </div>
@@ -27,6 +31,8 @@
     </ResizablePanelGroup>
   </div>
 </template>
+
+<style scoped></style>
 
 <script setup lang="ts">
 import pdfViewer from '@/views/pdf/pdfViewer.vue'
@@ -50,5 +56,3 @@ onMounted(async () => {
   console.log(`context:${store.getters.context}`)
 })
 </script>
-
-<style scoped></style>

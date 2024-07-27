@@ -9,12 +9,13 @@ export function useMessageSender(store: Store<any>) {
     store.dispatch('addMessage', { text: chatRequest.input, sender: 'user' })
     try {
       // 问答助手 发送消息
-      const resp = await askQuestion(chatRequest)
-      if (resp) {
-        // 添加消息到消息列表
-        store.dispatch('addMessage', { text: resp.data.output, sender: 'gpt' })
-        store.dispatch('updateContext', resp.data.context)
-      }
+      // const resp = await askQuestion(chatRequest)
+      // if (resp) {
+      //   // 添加消息到消息列表
+      //   store.dispatch('addMessage', { text: resp.data.output, sender: 'gpt' })
+      //   store.dispatch('updateContext', resp.data.context)
+      // }
+      store.dispatch('addMessage', { text: '哇哈哈哈哈哈哈', sender: 'gpt' })
     } catch (error) {
       console.error(error)
     }
