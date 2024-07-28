@@ -391,7 +391,7 @@ const isOpen = ref(true)
               placeholder="Type to search"
             />
           </template>
-          <template #default="scope">
+          <template #default="scope: { $index: number; row: Document }">
             <el-button
               class="text-sm"
               :disabled="processTaskStatus || uploadTaskStatus"
@@ -402,7 +402,7 @@ const isOpen = ref(true)
             <el-button
               class="text-sm"
               :disabled="processTaskStatus || uploadTaskStatus"
-              @click="handleDelete(scope.$inex, scope.row)"
+              @click="handleDelete(scope.$index, scope.row)"
             >
               Delete
             </el-button>
