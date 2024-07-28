@@ -313,7 +313,7 @@ const isOpen = ref(true)
     <h1 class="text-2xl font-bold mb-8">knowledge Documents</h1>
     <div class="flex-col mb-6">
       <div class="flex space-x-4 mb-6 w-full">
-        <Input type="text" placeholder="Filter apps..." class="w-1/2" />
+        <Input v-model="search" type="text" placeholder="搜索" class="w-1/2" />
         <input
           ref="fileInput"
           type="file"
@@ -384,13 +384,6 @@ const isOpen = ref(true)
           :formatter="formatterTime"
         />
         <el-table-column align="right">
-          <template #header>
-            <el-input
-              v-model="search"
-              size="small"
-              placeholder="Type to search"
-            />
-          </template>
           <template #default="scope: { $index: number; row: Document }">
             <el-button
               class="text-sm"
