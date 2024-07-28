@@ -22,6 +22,7 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
 import { ChevronsUpDown } from 'lucide-vue-next'
+import moment from 'moment'
 
 const search = ref('')
 
@@ -278,6 +279,26 @@ const formatterName = (row: Document) => {
   )
 }
 
+const formatterTime = (row: Document) => {
+  // return row.createTime
+  if (!row) return ''
+  if (row.createTime.toString().length === 10) {
+    row.createTime *= 1000
+  }
+  const now = moment()
+  const inputTime = moment(row.createTime)
+  const diffInHours = now.diff(inputTime, 'hours')
+
+  if (diffInHours < 1) {
+    const diffInMinutes = now.diff(inputTime, 'minutes')
+    return `${diffInMinutes} 分钟前`
+  } else if (diffInHours < 24) {
+    return `${diffInHours} 小时前`
+  } else {
+    return inputTime.format('YYYY-MM-DD')
+  }
+}
+
 const getTagType = (index: number) => {
   // 根据索引返回不同的类型
   const colors = ['success', 'info', 'warning', 'danger', 'primary']
@@ -357,7 +378,11 @@ const isOpen = ref(true)
           </template>
         </el-table-column>
         <el-table-column label="Vector Number" prop="vectorNum" />
-        <el-table-column label="Create Time" prop="createTime" />
+        <el-table-column
+          label="Create Time"
+          prop="createTime"
+          :formatter="formatterTime"
+        />
         <el-table-column align="right">
           <template #header>
             <el-input
