@@ -281,7 +281,9 @@ const formatterName = (row: Document) => {
 
 const formatterTime = (row: Document) => {
   // return row.createTime
-  if (!row) return ''
+  if (!row || !row.createTime) {
+    return ''
+  }
   if (row.createTime.toString().length === 10) {
     row.createTime *= 1000
   }
@@ -394,7 +396,11 @@ const isOpen = ref(true)
             </el-button>
             <el-button
               class="text-sm"
-              :disabled="processTaskStatus || uploadTaskStatus"
+              :disabled="
+                processTaskStatus ||
+                uploadTaskStatus ||
+                scope.row.documentStatus !== DocumentStatus.Done
+              "
               @click="handleDelete(scope.$index, scope.row)"
             >
               Delete
