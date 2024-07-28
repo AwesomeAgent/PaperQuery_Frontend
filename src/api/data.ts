@@ -274,6 +274,7 @@ export const askQuestionStream = async (req: ChatRequest, store: any) => {
       const { done, value } = await reader!.read()
       if (done) break
       const chunk = parsePack(decoder.decode(value, { stream: true })) as any
+      result += chunk
       // console.log(chunk)
       // 不断更新消息到消息列表
       store.commit('appendMessageByIndex', {
@@ -305,4 +306,31 @@ const parsePack = (str: string) => {
   }
 
   return dataList.join('')
+}
+
+// 获取记忆力上下文 API接口
+export const getMemoryContext = async (
+  question: string,
+  context: string,
+  answer: string,
+) => {
+  try {
+    let token = localStorage.getItem('token')
+    if (token) {
+      token = `Bearer ${token}`
+    }
+    const data = {
+      question: question,
+      context: context,
+      answer: answer,
+    }
+    const resp = await api.post('chat/summarize', data, {
+      headers: {
+        Authorization: token,
+      },
+    })
+    return resp.data
+  } catch (e: any) {
+    throw new Error(e.response.data.msg)
+  }
 }

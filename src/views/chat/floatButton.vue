@@ -31,10 +31,11 @@ const props = defineProps({
 })
 
 const store = useStore()
-const { sendMessage } = useMessageSender(store)
+const { sendMessage, updateContext } = useMessageSender(store)
 
 const inputValue = ref('')
 const sending = ref(false)
+const updating = ref(false)
 
 const handleKeyDown = (e: KeyboardEvent) => {
   if (e.key === 'Enter') {
@@ -57,8 +58,9 @@ const handleKeyDown = (e: KeyboardEvent) => {
 const handleInputSubmit = () => {
   // console.log(props.page)
   if (inputValue.value.trim()) {
+    const question = inputValue.value.trim()
     const chatRequest: ChatRequest = {
-      question: inputValue.value.trim(),
+      question: question,
       ref: {
         knowledgeID: props.knowledgeID,
         documentID: props.documentID,
@@ -68,9 +70,25 @@ const handleInputSubmit = () => {
       context: store.state.context,
     }
     sending.value = true
-    sendMessage(chatRequest).then(() => {
-      sending.value = false
-    })
+    sendMessage(chatRequest)
+      .then((response) => {
+        sending.value = false
+        updating.value = true
+        // 开始更新记忆力上下文
+        updateContext(question, response as string, store.getters.context)
+          .then((resp) => {
+            updating.value = false
+            resp.context && store.commit('updateContext', resp.context)
+          })
+          .catch((e: any) => {
+            updating.value = false
+            console.log(e)
+          })
+      })
+      .catch((e: any) => {
+        sending.value = false
+        console.log(e)
+      })
     inputValue.value = ''
   }
 }

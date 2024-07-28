@@ -1,6 +1,6 @@
 // src/hooks/useMessageSender.ts
 import { Store } from 'vuex'
-import { askQuestionStream } from '@/api/data'
+import { askQuestionStream, getMemoryContext } from '@/api/data'
 import { type ChatRequest } from '@/types/type'
 
 export function useMessageSender(store: Store<any>) {
@@ -10,12 +10,28 @@ export function useMessageSender(store: Store<any>) {
     try {
       // 问答助手 发送消息
       const resp = await askQuestionStream(chatRequest, store)
-    } catch (error) {
-      console.error(error)
+      return resp
+    } catch (error: any) {
+      throw new Error(error)
+    }
+  }
+
+  const updateContext = async (
+    question: string,
+    answer: string,
+    context: string,
+  ) => {
+    try {
+      // 获取记忆力上下文
+      const resp = await getMemoryContext(question, context, answer)
+      return resp.data
+    } catch (error: any) {
+      throw new Error(error)
     }
   }
 
   return {
     sendMessage,
+    updateContext,
   }
 }
