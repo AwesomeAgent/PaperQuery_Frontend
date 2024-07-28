@@ -1,45 +1,7 @@
-<template>
-  <div
-    v-if="isVisible"
-    class="floating-input fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-white rounded-full w-96 h-14 shadow-lg flex items-center p-4"
-  >
-    <div class="relative w-full">
-      <el-card
-        v-if="showCommandList"
-        :body-style="{ padding: '10px' }"
-        class="el-card command-list absolute bottom-full mb-2 bg-white border rounded shadow-lg w-full"
-      >
-        <div
-          v-for="(command, index) in commands"
-          :key="index"
-          class="p-1 cursor-pointer hover:bg-gray-100"
-          @click="selectCommand(command)"
-        >
-          <Button variant="outline" class="w-full">{{ command }}</Button>
-        </div>
-      </el-card>
-      <Input
-        v-model="inputValue"
-        placeholder="输入你的问题..."
-        class="w-full"
-        @input="checkForCommand"
-        @keyup.enter="handleInputSubmit"
-      />
-    </div>
-    <Button
-      variant="default"
-      class="ml-4 px-4 py-2"
-      :disabled="!inputValue || sending"
-      @click="handleInputSubmit"
-      >发送</Button
-    >
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { useMessageSender } from '@/views/chat/hooks/useMessageSender'
 import { useStore } from 'vuex'
 import { defineProps } from 'vue'
@@ -72,9 +34,24 @@ const store = useStore()
 const { sendMessage } = useMessageSender(store)
 
 const inputValue = ref('')
-const showCommandList = ref(false)
-const commands = ref(['翻译', '引用'])
 const sending = ref(false)
+
+const handleKeyDown = (e: KeyboardEvent) => {
+  if (e.key === 'Enter') {
+    if (e.shiftKey) {
+      // Shift + Enter 换行
+      // e.preventDefault()
+      inputValue.value += '\n'
+      console.log('换行')
+    } else if (!e.shiftKey) {
+      e.preventDefault()
+      // Enter 发送消息
+      // 防止重复发送
+      if (sending.value) return
+      handleInputSubmit()
+    }
+  }
+}
 
 // 发送消息
 const handleInputSubmit = () => {
@@ -95,39 +72,56 @@ const handleInputSubmit = () => {
       sending.value = false
     })
     inputValue.value = ''
-    showCommandList.value = false
   }
 }
 
-const checkForCommand = () => {
-  if (inputValue.value.includes('/')) {
-    showCommandList.value = true
-  } else {
-    showCommandList.value = false
-  }
-}
-
-const selectCommand = (command: any) => {
-  inputValue.value = command
-  showCommandList.value = false
+const scrollToBottom = () => {
+  const textarea = document.getElementById('textarea_id')
+  nextTick(() => {
+    if (!textarea) return
+    textarea.scrollTop = textarea.scrollHeight
+  })
 }
 </script>
+
+<template>
+  <div
+    v-if="isVisible"
+    class="floating-input fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-white rounded-full w-96 h-14 shadow-lg flex items-center p-4"
+  >
+    <div class="relative w-full flex items-center">
+      <Textarea
+        id="textarea_id"
+        v-model="inputValue"
+        placeholder="输入你的问题..."
+        rows="1"
+        class="custom-textarea w-full h-10"
+        @input="scrollToBottom"
+        @keydown="handleKeyDown"
+      />
+    </div>
+    <Button
+      variant="default"
+      class="ml-4 px-4 py-2"
+      :disabled="!inputValue || sending"
+      @click="handleInputSubmit"
+      >发送</Button
+    >
+  </div>
+</template>
 
 <style scoped>
 .floating-input {
   z-index: 1000;
 }
 
-.command-list {
-  z-index: 1001;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.command-list li {
-  list-style: none;
-}
 .el-card {
   padding: 0 !important;
+}
+
+.custom-textarea {
+  min-height: 0; /* 确保没有最小高度限制 */
+  padding: 0.5rem; /* 去除内边距 */
+  resize: none; /* 防止用户调整大小 */
 }
 </style>
