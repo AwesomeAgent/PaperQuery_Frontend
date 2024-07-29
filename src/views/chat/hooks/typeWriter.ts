@@ -25,7 +25,7 @@ export class TypewriterQueue {
             index: index,
             text: char,
           })
-          console.log(char)
+          // console.log(char)
           setTimeout(typeNextChar, delay)
         }
       } else {

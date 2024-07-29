@@ -86,13 +86,18 @@ const messages = computed(() => store.getters.messageList)
 onMounted(() => {
   getDocumentSummary(props.knowledgeId as string, props.documentId as string)
     .then((res) => {
+      if (res.data.summarize == '') {
+        return
+      }
       messages.value.push({
         text: '',
         sender: 'bot',
       })
+      // 更新上下文
+      store.commit('updateContext', res.data.summarize)
       // 将字符串中每个字符弄成一个数组
       const a: string[] = res.data.summarize.split('')
-      console.log(a)
+      // console.log(a)
       const typewritter = new TypewriterQueue(a, store)
       typewritter.typeOut(30)
     })
