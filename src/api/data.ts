@@ -334,3 +334,29 @@ export const getMemoryContext = async (
     throw new Error(e.response.data.msg)
   }
 }
+
+// 获取文档总结 API接口
+export const getDocumentSummary = async (
+  knowledgeID: string,
+  documentID: string,
+) => {
+  try {
+    let token = localStorage.getItem('token')
+    if (token) {
+      token = `Bearer ${token}`
+    }
+    const params = {
+      knowledgeID: knowledgeID,
+      documentID: documentID,
+    }
+    const resp = await api.get('/document/summarize', {
+      headers: {
+        Authorization: token,
+      },
+      params: params,
+    })
+    return resp.data
+  } catch (e: any) {
+    throw new Error(e.response.data.msg)
+  }
+}

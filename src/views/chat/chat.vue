@@ -7,7 +7,7 @@
       </el-header>
       <el-main class="flex">
         <div ref="messagecontainer" class="w-full overflow-y-auto">
-          <MessageList />
+          <MessageList :knowledge-id="knowledgeId" :document-id="documentId" />
         </div>
       </el-main>
     </el-container>
@@ -20,6 +20,11 @@
 import { ElHeader, ElMain, ElContainer } from 'element-plus'
 import MessageList from '@/views/chat/MessageList.vue'
 import { useStore } from 'vuex'
+
+defineProps({
+  knowledgeId: String,
+  documentId: String,
+})
 
 const store = useStore()
 

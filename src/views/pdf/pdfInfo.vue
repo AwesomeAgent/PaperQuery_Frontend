@@ -22,7 +22,11 @@
             <ResizableHandle with-handle />
             <ResizablePanel id="panel-2-2" :min-size="50" class="h-full">
               <div class="flex flex-1 h-full">
-                <chat class="flex-1" />
+                <chat
+                  class="flex-1"
+                  :knowledge-id="knowledgeID"
+                  :document-id="documentID"
+                />
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>
