@@ -1,66 +1,73 @@
 <template>
-  <div class="w-full h-screen bg-white-800 text-black flex flex-col border">
-    <div class="p-4 text-3xl font-bold">PaperQuery</div>
-    <nav class="flex-1">
-      <ul>
-        <li
-          v-for="item in menuItems"
-          :key="item.name"
-          class="px-4 py-2 hover:bg-gray-100 text-3xl font-bold"
-        >
-          <router-link :to="item.route">
-            <div class="flex items-center space-x-2 z-40 h-full">
-              <div>
+  <nav>
+    <div
+      :class="[' border-border pb-12 lg:block']"
+      class="min-w-[20px] transition-all duration-300 ease-in-out w-full"
+    >
+      <div class="p-4">
+        <Button variant="outline" class="w-full justify-center">
+          <Avatar class="mr-2 h-5 w-5">
+            <AvatarImage src="https://avatar.vercel.sh/personal.png" />
+          </Avatar>
+          <p class="text-xl font-bold">PaperQuery</p>
+        </Button>
+      </div>
+      <div class="space-y-4 py-4">
+        <div v-for="item in sidebarItems" :key="item.header" class="px-3 py-2">
+          <h3
+            v-if="!isCollapsed"
+            class="px-4 text-lg font-semibold tracking-tight"
+          >
+            {{ item.header }}
+          </h3>
+          <span v-else class="px-4 text-lg font-semibold tracking-tight" />
+          <div
+            v-for="subItem in item.subItems"
+            :key="subItem.title"
+            class="mt-2 flex flex-col space-y-1.5"
+          >
+            <router-link :to="subItem.link" class="flex">
+              <Button
+                class="justify-start w-full"
+                variant="ghost"
+                :class="{ 'bg-secondary': subItem.selected }"
+                @click="handleButtonClick(subItem)"
+              >
                 <component
-                  :is="resolveComponent(item.icon)"
-                  :size="item.size"
+                  :is="subItem.icon"
+                  class="h-4 w-4 transition-all duration-1000 ease-in-out"
                 />
-              </div>
-              <span text-xl>{{ item.name }}</span>
-            </div>
-          </router-link>
-        </li>
-      </ul>
-    </nav>
-  </div>
+                <span
+                  v-if="!isCollapsed"
+                  class="ml-2 transition-all duration-1000 ease-in-out"
+                  >{{ subItem.title }}</span
+                >
+              </Button>
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
 </template>
 
 <script setup lang="ts">
-import { IconLayoutDashboard, IconChecklist } from '@tabler/icons-vue'
+import { sidebarItems } from './utils/sidebar'
+import { Avatar, AvatarImage } from './ui/avatar'
+import { Button } from '@/components/ui/button'
 
-const menuItems = ref([
-  {
-    name: '控制台',
-    route: '/home/dashboard',
-    icon: 'IconLayoutDashboard',
-    size: '23',
-  },
-  {
-    name: '知识库',
-    route: '/home/library',
-    icon: 'IconChecklist',
-    size: '23',
-  },
-])
+defineProps({
+  isCollapsed: Boolean,
+})
 
-const iconComponents = {
-  IconLayoutDashboard,
-  IconChecklist,
-}
-
-const resolveComponent = (name: string) => {
-  return iconComponents[name as keyof typeof iconComponents]
+const handleButtonClick = (subItem: any) => {
+  for (const sidebarItem of sidebarItems) {
+    for (const subItem of sidebarItem.subItems) {
+      subItem.selected = false
+    }
+  }
+  subItem.selected = true
 }
 </script>
 
-<style scoped>
-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-nav ul li {
-  transition: background-color 0.3s;
-}
-</style>
+<style scoped></style>

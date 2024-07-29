@@ -57,11 +57,11 @@ const routes: Array<RouteRecordRaw> = [
   // 知识页面
 
   // 404页面
-  // {
-  //   path: '/:catchAll(.*)',
-  //   name: 'NotFound',
-  //   component: () => import('@/views/NotFound.vue'),
-  // },
+  {
+    path: '/:catchAll(.*)',
+    name: 'NotFound',
+    component: () => import('@/views/NotFound.vue'),
+  },
 ]
 
 export default routes

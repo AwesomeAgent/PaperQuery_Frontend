@@ -1,15 +1,26 @@
 <template>
   <div id="app" class="flex h-screen">
     <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel :default-size="15" :min-size="15">
-        <SideBar />
+      <ResizablePanel
+        :default-size="265"
+        :min-size="15"
+        :max-size="15"
+        :collapsed-size="10"
+        collapsible
+        :class="
+          cn(
+            isCollapsed &&
+              'min-w-[100px] transition-all duration-500 ease-in-out',
+          )
+        "
+        @expand="onExpand"
+        @collapse="onCollapse"
+      >
+        <SideBar :is-collapsed="isCollapsed" />
       </ResizablePanel>
       <ResizableHandle with-handle />
       <ResizablePanel><router-view /></ResizablePanel>
     </ResizablePanelGroup>
-    <!-- <div>
-      <embed src="/assets/sample.pdf" type="application/pdf" />
-    </div> -->
   </div>
 </template>
 
@@ -19,6 +30,19 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from '@/components/ui/resizable'
+import { cn } from '@/lib/utils'
+
+const isCollapsed = ref(false)
+
+function onCollapse() {
+  console.log('onCollapse')
+  isCollapsed.value = true
+}
+
+function onExpand() {
+  console.log('onExpand')
+  isCollapsed.value = false
+}
 </script>
 
 <style lang="less" scoped>
