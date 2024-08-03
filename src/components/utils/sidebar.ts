@@ -1,13 +1,4 @@
-import {
-  Mic2,
-  PlayCircle,
-  LayoutGrid,
-  RadioTower,
-  ListMusic,
-  Music2,
-  User,
-  Disc,
-} from 'lucide-vue-next'
+import { PlayCircle, ListMusic, User } from 'lucide-vue-next'
 
 interface SidbarItems {
   header: string
@@ -42,11 +33,11 @@ export const sidebarItems: SidbarItems[] = [
     ],
   },
   {
-    header: 'Settings',
+    header: 'Chat',
     subItems: [
       {
-        title: 'Settings',
-        link: '/settings',
+        title: 'Chat',
+        link: '/home/chat',
         icon: User,
       },
     ],

@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import pdfViewer from '@/views/pdf/pdfViewer.vue'
-import chat from '@/views/chat/chat.vue'
+import chat from '@/views/smallChat/chat.vue'
 import translateBox from '@/views/translate/translateBox.vue'
 import { useRoute } from 'vue-router'
 import {

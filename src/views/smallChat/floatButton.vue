@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { useMessageSender } from '@/views/chat/hooks/useMessageSender'
+import { useMessageSender } from '@/views/smallChat/hooks/useMessageSender'
 import { useStore } from 'vuex'
 import { defineProps } from 'vue'
 import { type ChatRequest } from '@/types/type'

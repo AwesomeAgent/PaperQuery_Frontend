@@ -1,5 +1,7 @@
 <template>
-  <router-view :key="key" />
+  <div class="h-screen w-screen">
+    <router-view :key="key" class="h-full" />
+  </div>
 </template>
 
 <script setup lang="ts">

@@ -52,16 +52,20 @@ const routes: Array<RouteRecordRaw> = [
         name: 'pdfInfo',
         component: pdfInfo,
       },
+      {
+        path: 'Chat',
+        component: () => import('@/views/Chat/Chat.vue'),
+      },
     ],
   },
   // 知识页面
 
   // 404页面
-  {
-    path: '/:catchAll(.*)',
-    name: 'NotFound',
-    component: () => import('@/views/NotFound.vue'),
-  },
+  // {
+  //   path: '/:catchAll(.*)',
+  //   name: 'NotFound',
+  //   component: () => import('@/views/NotFound.vue'),
+  // },
 ]
 
 export default routes

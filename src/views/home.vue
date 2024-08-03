@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="flex h-screen">
+  <div id="app" class="flex w-full">
     <ResizablePanelGroup direction="horizontal">
       <ResizablePanel
         :default-size="265"
@@ -31,7 +31,6 @@ import {
   ResizablePanelGroup,
 } from '@/components/ui/resizable'
 import { cn } from '@/lib/utils'
-
 const isCollapsed = ref(false)
 
 function onCollapse() {

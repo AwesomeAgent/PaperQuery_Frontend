@@ -5,16 +5,17 @@ import router from '@/router'
 import { store } from './stores'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import './input.css'
 
 // 全局样式
-import 'virtual:uno.css'
+// import 'virtual:uno.css'
 import '@/styles/var.less'
 import '@/styles/mixin.less'
 import '@/styles/global.less'
 import './assets/index.css'
 
 // 创建 Pinia 实例
-// const pinia = createPinia()
+const pinia = createPinia()
 /**
  * Pinia 支持功能扩展，例如本地持久化功能
  *
@@ -29,6 +30,7 @@ import './assets/index.css'
 createApp(App)
   // .use(pinia) // 启用 Pinia
   .use(store) // 启用 Vuex
+  .use(pinia)
   .use(router) // 启用 Vue Router
   .use(ElementPlus) // 启用 Element Plus
   .mount('#app')

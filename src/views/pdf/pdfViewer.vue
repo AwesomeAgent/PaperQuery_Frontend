@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { VuePDF, usePDF } from '@tato30/vue-pdf'
 import '@tato30/vue-pdf/style.css'
-import FloatingButton from '@/views/chat/floatButton.vue'
+import FloatingButton from '@/views/smallChat/floatButton.vue'
 import { useStore } from 'vuex'
 import { useScroll } from '@vueuse/core'
 import { translateText } from '@/api/data'
