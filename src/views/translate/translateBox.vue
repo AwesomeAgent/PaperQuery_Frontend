@@ -19,6 +19,10 @@ const store = useStore()
 const selectedText = computed(() => {
   return store.getters.translatedText
 })
+
+onMounted(() => {
+  store.commit('setTranslatedText', '')
+})
 </script>
 
 <style scoped>
