@@ -54,7 +54,11 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'Chat',
-        component: () => import('@/views/Chat/Chat.vue'),
+        component: () => import('@/views/chat/chat.vue'),
+      },
+      {
+        path: 'Note',
+        component: () => import('@/views/note/note.vue'),
       },
     ],
   },

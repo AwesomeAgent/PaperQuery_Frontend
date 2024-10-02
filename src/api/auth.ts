@@ -4,6 +4,7 @@ import api from '@/api/api'
 
 export const login = async (user: any): Promise<LoginResponse> => {
   try {
+    console.log(import.meta.env.VITE_API_BASE_URL)
     const response = await api.post<LoginResponse>('/login', user)
     const resp = response.data
     if (resp) {
