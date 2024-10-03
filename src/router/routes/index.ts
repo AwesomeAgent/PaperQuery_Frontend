@@ -60,6 +60,16 @@ const routes: Array<RouteRecordRaw> = [
         path: 'Note',
         component: () => import('@/views/note/note.vue'),
       },
+      {
+        path: 'Forum',
+        component: () => import('@/views/forum/forum.vue'),
+        children: [
+          {
+            path: 'threadDetail',
+            component: () => import('@/views/forum/components/threadDetail.vue'),
+          },
+        ],
+      }
     ],
   },
   // 知识页面

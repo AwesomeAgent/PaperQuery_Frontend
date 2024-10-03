@@ -52,4 +52,14 @@ export const sidebarItems: SidbarItems[] = [
       },
     ],
   },
+  {
+    header: 'Forum',
+    subItems: [
+      {
+        title: '论坛',
+        link: '/home/forum',
+        icon: User,
+      },
+    ],
+  },
 ]
