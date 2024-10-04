@@ -1,10 +1,6 @@
 <template>
   <div class="flex h-screen">
-    <ResizablePanelGroup
-      id="group_1"
-      direction="horizontal"
-      class="w-full h-full"
-    >
+    <ResizablePanelGroup id="group_1" direction="horizontal" class="w-full h-full">
       <ResizablePanel id="panel-1" :min-size="60" class="h-full">
         <div class="w-full h-full">
           <pdfViewer :knowledge-i-d="knowledgeID" :document-i-d="documentID" />
@@ -16,17 +12,13 @@
           <ResizablePanelGroup id="group_2" direction="vertical" class="h-full">
             <ResizablePanel id="panel-2-1" :min-size="30" class="h-full">
               <div class="flex flex-1 h-full">
-                <translateBox />
+                <translateBox :knowledge-id="knowledgeID" :document-id="documentID" />
               </div>
             </ResizablePanel>
             <ResizableHandle with-handle />
             <ResizablePanel id="panel-2-2" :min-size="50" class="h-full">
               <div class="flex flex-1 h-full">
-                <chat
-                  class="flex-1"
-                  :knowledge-id="knowledgeID"
-                  :document-id="documentID"
-                />
+                <chat class="flex-1" :knowledge-id="knowledgeID" :document-id="documentID" />
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>
@@ -54,5 +46,5 @@ const route = useRoute()
 const knowledgeID = route.params.knowledgeID as string
 const documentID = route.params.documentID as string
 
-onMounted(async () => {})
+onMounted(async () => { })
 </script>

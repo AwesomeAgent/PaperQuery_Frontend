@@ -22,7 +22,7 @@
 
       <!-- Note content -->
       <div v-show="!TranDisplay" class="h-full overflow-auto p-4">
-        <note class="w-full h-full"></note>
+        <note class="w-full h-full" :knowledgeID="knowledgeID" :documentID="documentID"></note>
       </div>
     </div>
   </div>
@@ -33,7 +33,10 @@ import { Textarea } from '@/components/ui/textarea'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useStore } from 'vuex'
 import note from '@/views/note/note.vue'
+const route = useRoute()
 
+const knowledgeID = route.params.knowledgeID as string
+const documentID = route.params.documentID as string
 
 const store = useStore()
 
