@@ -1,6 +1,6 @@
 <template>
-  <div id="app" class="flex w-full">
-    <ResizablePanelGroup direction="horizontal">
+  <div id="home" class="flex h-full">
+    <!-- <ResizablePanelGroup direction="horizontal">
       <ResizablePanel
         :default-size="265"
         :min-size="15"
@@ -19,8 +19,11 @@
         <SideBar :is-collapsed="isCollapsed" />
       </ResizablePanel>
       <ResizableHandle with-handle />
-      <ResizablePanel><router-view /></ResizablePanel>
-    </ResizablePanelGroup>
+      <ResizablePanel class="flex h-screen overflow-auto"></ResizablePanel>
+      <router-view />
+    </ResizablePanelGroup> -->
+    <SideBar :is-collapsed="isCollapsed" />
+    <router-view class="flex-grow" />
   </div>
 </template>
 

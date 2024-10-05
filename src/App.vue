@@ -1,6 +1,6 @@
 <template>
-  <div class="h-screen w-screen">
-    <router-view :key="key" class="h-full" />
+  <div id="main router" class="flex-grow h-full">
+    <router-view :key="key" class="" />
   </div>
 </template>
 
