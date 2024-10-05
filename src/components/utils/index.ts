@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 // src/components/utils/index.ts
 export function cn(...args: any[]): string {
   return args.filter(Boolean).join(' ');
@@ -61,3 +63,33 @@ export const formatName = (name: string, maxLength: number): string => {
     return name;
   }
 };
+
+/**
+ * 格式化时间
+ * @param time - 时间字符串
+ * @returns 格式化后的时间
+ */
+export const formatterTime = (timestamp :string ) => {
+  if (!timestamp) {
+    return ''
+  }
+
+  // 确保时间戳为毫秒级别
+  let createTime = parseInt(timestamp, 10)
+  if (timestamp.length === 10) {
+    createTime *= 1000 // 秒级时间戳转成毫秒
+  }
+
+  const now = moment()
+  const inputTime = moment(createTime)
+  const diffInMinutes = now.diff(inputTime, 'minutes')
+  const diffInHours = now.diff(inputTime, 'hours')
+
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes} 分钟前`
+  } else if (diffInHours < 24) {
+    return `${diffInHours} 小时前`
+  } else {
+    return inputTime.format('YYYY-MM-DD')
+  }
+}

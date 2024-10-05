@@ -57,7 +57,7 @@ export const sidebarItems: SidbarItems[] = [
     subItems: [
       {
         title: '论坛',
-        link: '/home/forum',
+        link: '/home/forum/threads',
         icon: User,
       },
     ],

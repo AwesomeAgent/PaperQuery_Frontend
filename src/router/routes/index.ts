@@ -62,12 +62,18 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'Forum',
+        name: 'forum',
         component: () => import('@/views/forum/forum.vue'),
         children: [
           {
-            path: 'threadDetail',
+            path: 'threadDetail/:postid',
+            name: 'threadDetail',
             component: () => import('@/views/forum/components/threadDetail.vue'),
           },
+          {
+            path: 'threads',
+            component: () => import('@/views/forum/components/threads.vue'),
+          }
         ],
       }
     ],
