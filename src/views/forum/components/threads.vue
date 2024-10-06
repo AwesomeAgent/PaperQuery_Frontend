@@ -31,7 +31,7 @@
               <h3 class="text-lg font-bold">{{ post.title }}</h3>
               <p class="text-gray-600 text-sm">
                 {{ post.username }} ·
-                {{ formatterTime(post.publishtime_timestamp) }}
+                {{ formatterTime(post.publishtime_timestamp.toString()) }}
               </p>
             </div>
           </div>
@@ -53,8 +53,8 @@ interface Post {
   postid: string
   title: string
   content: string
-  publishtime_timestamp: string
-  updatetime_timestamp: string
+  publishtime_timestamp: number
+  updatetime_timestamp: number
   lid: string
   username: string
 }

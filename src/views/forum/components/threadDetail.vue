@@ -4,7 +4,7 @@
     <div
       class="flex-grow flex flex-col bg-white rounded-lg shadow overflow-hidden"
     >
-      <div class="flex flex-col p-4 overflow-auto">
+      <div ref="commentsContainer" class="flex flex-col p-4 overflow-auto">
         <!-- 帖子标题和作者信息 -->
         <div class="flex justify-between border-b pb-4 mb-4">
           <div>
@@ -13,7 +13,9 @@
             </h1>
             <div class="text-sm text-gray-600">
               <span>{{ post.username }}</span> -
-              <span>{{ formatterTime(post.publishtime_timestamp) }}</span>
+              <span>{{
+                formatterTime(post.publishtime_timestamp.toString())
+              }}</span>
             </div>
           </div>
           <div class="flex items-center">
@@ -31,23 +33,28 @@
           <h2 class="text-lg font-semibold mb-4">
             {{ post.comments.length > 0 ? '评论' : '暂无评论' }}
           </h2>
-          <div class="space-y-4">
-            <!-- 使用 v-for 渲染每个评论 -->
-            <div
-              v-for="(comment, index) in post.comments"
-              :key="index"
-              class="border p-4 rounded-lg"
-            >
-              <div class="flex items-center justify-between mb-2">
-                <div class="text-gray-700 font-bold">
-                  {{ comment.username }}
+          <div>
+            <!-- 使用 transition-group 包裹评论列表 -->
+            <transition-group name="fade" tag="div" class="space-y-4">
+              <!-- 使用 v-for 渲染每个评论 -->
+              <div
+                v-for="(comment, index) in post.comments"
+                :key="index"
+                class="border p-4 rounded-lg"
+              >
+                <div class="flex items-center justify-between mb-2">
+                  <div class="text-gray-700 font-bold">
+                    {{ comment.username }}
+                  </div>
+                  <div class="text-sm text-gray-500">
+                    {{
+                      formatterTime(comment.publishtime_timestamp.toString())
+                    }}
+                  </div>
                 </div>
-                <div class="text-sm text-gray-500">
-                  {{ formatterTime(comment.publishtime_timestamp) }}
-                </div>
+                <p>{{ comment.content }}</p>
               </div>
-              <p>{{ comment.content }}</p>
-            </div>
+            </transition-group>
           </div>
         </div>
         <!-- 回复输入框 -->
@@ -91,7 +98,7 @@ interface Comment {
   postid: string
   username: string
   content: string
-  publishtime_timestamp: string
+  publishtime_timestamp: number
 }
 
 interface PostContent {
@@ -99,8 +106,8 @@ interface PostContent {
   postid: string
   title: string
   content: string
-  publishtime_timestamp: string
-  updatetime_timestamp: string
+  publishtime_timestamp: number
+  updatetime_timestamp: number
   username: string
   comments: Comment[]
 }
@@ -113,24 +120,26 @@ const postid = route.params.postid as string
 
 const replyContent = ref('')
 
-const buttonList = [
-  '技术',
-  '生活',
-  '学习',
-  '创意',
-  '好玩',
-  '问与答',
-  '城市',
-  '其他',
-]
+const commentsContainer = ref<HTMLDivElement | null>(null)
+
+// var post = reactive<PostContent>({
+//   lid: '',
+//   postid: '',
+//   title: '',
+//   content: '',
+//   publishtime_timestamp: 0,
+//   updatetime_timestamp: 0,
+//   username: '',
+//   comments: [],
+// })
 
 const post = ref<PostContent>({
   lid: '',
   postid: '',
   title: '',
   content: '',
-  publishtime_timestamp: '',
-  updatetime_timestamp: '',
+  publishtime_timestamp: 0,
+  updatetime_timestamp: 0,
   username: '',
   comments: [],
 })
@@ -174,6 +183,14 @@ const reply = () => {
         type: 'success',
         duration: 1000,
       })
+      post.value.comments.push({
+        lid: '',
+        postid: 'postid',
+        username: localStorage.getItem('username') as string,
+        content: replyContent.value,
+        // 获取当前的时间戳
+        publishtime_timestamp: new Date().getTime(),
+      })
       replyContent.value = ''
     })
     .catch((err) => {
@@ -186,8 +203,62 @@ const reply = () => {
       console.error(err)
     })
 }
+
+// 监听评论数组的变化
+// 每次新增评论时，滚动到评论区域的底部
+// 首次加载时不会触发
+watch(
+  () => post.value.comments.length,
+  (newLen, oldLen) => {
+    // 判断是否是新增评论
+    if (newLen > oldLen && oldLen !== 0) {
+      // 在 DOM 更新完成后执行滚动操作
+      nextTick(() => {
+        const container = commentsContainer.value as HTMLDivElement
+        container.scrollTop = container.scrollHeight // 滚动到底部
+      })
+    }
+  },
+)
+
+const fetchData = async () => {
+  // console.log('开始请求数据...')
+  try {
+    const response = await getForumPost(postid)
+    const res = await response.data
+    const { commits, ...otherData } = res
+
+    // 赋值时，将 commits 赋值给 comments，其他字段保持原样
+    post.value = {
+      ...otherData, // 保持其他字段不变
+      comments: commits, // 将服务器返回的 commits 赋值给 comments
+    }
+    // console.log('请求成功', post.value)
+  } catch (error) {
+    console.error('请求出错', error)
+  }
+
+  // 在异步操作完成后，再开始下一个定时器
+  setTimeout(fetchData, 2000)
+}
+
+// 初次启动
+fetchData()
 </script>
 
 <style scoped>
-/* 如果有自定义样式需要，可以在这里添加 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
 </style>

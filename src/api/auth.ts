@@ -9,6 +9,7 @@ export const login = async (user: any): Promise<LoginResponse> => {
     const resp = response.data
     if (resp) {
       localStorage.setItem('token', resp.data.access_token)
+      localStorage.setItem('username', user.username)
     }
     return response.data
   } catch (e: any) {

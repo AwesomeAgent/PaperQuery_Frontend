@@ -23,7 +23,10 @@ router.beforeEach((to, from, next) => {
   progress.start()
 
   // 从本地存储中获取用户登录状态
-  const loggedIn = localStorage.getItem('token')
+  const username = localStorage.getItem('username')
+
+  const loggedIn = localStorage.getItem('token') && username
+  
   // 检测用户是否登录 如果未登录则跳转到登录页面
   if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
     console.log('未登录')
