@@ -75,11 +75,36 @@ const buttonList = [
   '其他',
 ]
 
+let timeoutId: number | null = null // 明确指定类型
+
 onMounted(() => {
   // 获取所有帖子
   getForumPosts().then((res) => {
     posts.value = res.data
   })
+
+  // 定时获取全部帖子
+  const fetchData = async () => {
+    // console.log('开始请求数据...')
+    try {
+      const response = await getForumPosts()
+      const res = await response.data
+      posts.value = res
+    } catch (error) {
+      console.error('请求出错', error)
+    }
+
+    // 在异步操作完成后，再开始下一个定时器
+    timeoutId = window.setTimeout(fetchData, 2000)
+  }
+
+  fetchData()
+})
+
+onUnmounted(() => {
+  if (timeoutId) {
+    clearTimeout(timeoutId)
+  }
 })
 </script>
 

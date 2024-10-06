@@ -144,6 +144,8 @@ const post = ref<PostContent>({
   comments: [],
 })
 
+let timeoutId: number | null = null // 明确指定类型
+
 onMounted(() => {
   getForumPost(postid)
     .then((res) => {
@@ -159,6 +161,37 @@ onMounted(() => {
     .catch((err) => {
       console.log(err)
     })
+
+  // 定时获取帖子详情 评论
+  const fetchData = async () => {
+    // console.log('开始请求数据...')
+    try {
+      const response = await getForumPost(postid)
+      const res = await response.data
+      const { commits, ...otherData } = res
+
+      // 赋值时，将 commits 赋值给 comments，其他字段保持原样
+      post.value = {
+        ...otherData, // 保持其他字段不变
+        comments: commits, // 将服务器返回的 commits 赋值给 comments
+      }
+      // console.log('请求成功', post.value)
+    } catch (error) {
+      console.error('请求出错', error)
+    }
+
+    // 在异步操作完成后，再开始下一个定时器
+    timeoutId = window.setTimeout(fetchData, 2000)
+  }
+
+  // 初次启动
+  fetchData()
+})
+
+onUnmounted(() => {
+  if (timeoutId) {
+    clearTimeout(timeoutId)
+  }
 })
 
 const goback = () => {
@@ -220,30 +253,6 @@ watch(
     }
   },
 )
-
-const fetchData = async () => {
-  // console.log('开始请求数据...')
-  try {
-    const response = await getForumPost(postid)
-    const res = await response.data
-    const { commits, ...otherData } = res
-
-    // 赋值时，将 commits 赋值给 comments，其他字段保持原样
-    post.value = {
-      ...otherData, // 保持其他字段不变
-      comments: commits, // 将服务器返回的 commits 赋值给 comments
-    }
-    // console.log('请求成功', post.value)
-  } catch (error) {
-    console.error('请求出错', error)
-  }
-
-  // 在异步操作完成后，再开始下一个定时器
-  setTimeout(fetchData, 2000)
-}
-
-// 初次启动
-fetchData()
 </script>
 
 <style scoped>
