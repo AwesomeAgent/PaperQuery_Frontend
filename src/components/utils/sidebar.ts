@@ -1,55 +1,30 @@
 import { PlayCircle, ListMusic, User } from 'lucide-vue-next'
 
-interface SidbarItems {
-  header: string
-  subItems: {
-    title: string
-    icon: any
-    link: string
-    selected?: boolean
-  }[]
+interface SidebarItem {
+  title: string
+  icon: any
+  link: string
 }
 
-export const sidebarItems: SidbarItems[] = [
+export const sidebarItems : SidebarItem[] = [
   {
-    header: 'DashBoard',
-    subItems: [
-      {
-        title: 'DashBoard',
-        icon: PlayCircle,
-        link: '/home/dashboard',
-        selected: true,
-      },
-    ],
+    title: 'DashBoard',
+    icon: PlayCircle,
+    link: '/home/dashboard',
   },
   {
-    header: 'Knowledge',
-    subItems: [
-      {
-        title: 'Library',
-        link: '/home/library',
-        icon: ListMusic,
-      },
-    ],
+    title: 'Library',
+    link: '/home/library',
+    icon: ListMusic,
   },
   {
-    header: 'Chat',
-    subItems: [
-      {
-        title: 'Chat',
-        link: '/home/chat',
-        icon: User,
-      },
-    ],
+    title: 'Chat',
+    link: '/home/chat',
+    icon: User,
   },
   {
-    header: 'Forum',
-    subItems: [
-      {
-        title: '论坛',
-        link: '/home/forum/threads',
-        icon: User,
-      },
-    ],
+    title: '论坛',
+    link: '/home/forum/threads',
+    icon: User,
   },
 ]

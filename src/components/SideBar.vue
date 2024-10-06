@@ -13,34 +13,30 @@
         </Button>
       </div>
       <div class="space-y-4 py-4">
-        <div v-for="item in sidebarItems" :key="item.header" class="px-3 py-2">
+        <div v-for="item in sidebarItems" :key="item.title" class="px-3 py-2">
           <h3
             v-if="!isCollapsed"
             class="px-4 text-lg font-semibold tracking-tight"
           >
-            {{ item.header }}
+            {{ item.title }}
           </h3>
           <span v-else class="px-4 text-lg font-semibold tracking-tight" />
-          <div
-            v-for="subItem in item.subItems"
-            :key="subItem.title"
-            class="mt-2 flex flex-col space-y-1.5"
-          >
-            <router-link :to="subItem.link" class="flex">
+          <div class="mt-2 flex flex-col space-y-1.5">
+            <router-link :to="item.link" class="flex">
               <Button
                 class="justify-start w-full"
                 variant="ghost"
-                :class="{ 'bg-secondary': subItem.selected }"
-                @click="handleButtonClick(subItem)"
+                :class="{ 'bg-secondary': selectedItem.title === item.title }"
+                @click="selectItem(item)"
               >
                 <component
-                  :is="subItem.icon"
+                  :is="item.icon"
                   class="h-4 w-4 transition-all duration-1000 ease-in-out"
                 />
                 <span
                   v-if="!isCollapsed"
                   class="ml-2 transition-all duration-1000 ease-in-out"
-                  >{{ subItem.title }}</span
+                  >{{ item.title }}</span
                 >
               </Button>
             </router-link>
@@ -60,14 +56,33 @@ defineProps({
   isCollapsed: Boolean,
 })
 
-const handleButtonClick = (subItem: any) => {
-  for (const sidebarItem of sidebarItems) {
-    for (const subItem of sidebarItem.subItems) {
-      subItem.selected = false
-    }
-  }
-  subItem.selected = true
+const selectItem = (item: any) => {
+  selectedItem.value = item
 }
+
+const route = useRoute()
+
+const selectedItem = ref(sidebarItems[0])
+
+onMounted(() => {
+  // 在加载页面的时候根据当前的路由设置选中的按钮
+  console.log(route.path)
+  sidebarItems.forEach((item) => {
+    if (item.link === route.path) {
+      selectedItem.value = item
+    }
+  })
+  if (
+    route.path.indexOf('pdfInfo') != -1 ||
+    route.path.indexOf('knowledge') != -1
+  ) {
+    selectedItem.value = sidebarItems[1]
+  }
+
+  if (route.path.indexOf('forum') != -1) {
+    selectedItem.value = sidebarItems[3]
+  }
+})
 </script>
 
 <style scoped></style>
