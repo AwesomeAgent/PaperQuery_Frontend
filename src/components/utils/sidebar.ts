@@ -43,16 +43,6 @@ export const sidebarItems: SidbarItems[] = [
     ],
   },
   {
-    header: 'Note',
-    subItems: [
-      {
-        title: 'Note',
-        link: '/home/note',
-        icon: User,
-      },
-    ],
-  },
-  {
     header: 'Forum',
     subItems: [
       {
