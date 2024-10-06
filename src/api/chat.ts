@@ -1,7 +1,5 @@
 import axios from "@/plugins/axios";
 
-import { serverUrl, token } from "@/config/config";
-
 import { parsePack2 } from "@/utils/parsePack";
 
 export const uploadFile = async (file: File) => {
@@ -9,11 +7,11 @@ export const uploadFile = async (file: File) => {
     const formData = new FormData();
     formData.append("documentFile", file);
     const resp = await axios.post(
-      `${serverUrl}/document/multi_file_chat_upload`,
+      `${import.meta.env.VITE_API_BASE_URL}/document/multi_file_chat_upload`,
       formData,
       {
         headers: {
-          Authorization: token,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "multipart/form-data",
         },
       }
@@ -29,12 +27,12 @@ export const getAnswerStream = async (
   context: string,
   uid: Array<string>
 ) => {
-  const url = `${serverUrl}/chat/mulit_file_chat_generate_flow`;
+  const url = `${import.meta.env.VITE_API_BASE_URL}/chat/mulit_file_chat_generate_flow`;
   try {
     const res = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       method: "POST",
       body: JSON.stringify({
@@ -92,9 +90,9 @@ export const updateMemory = async (
       context: context,
       answer: answer,
     };
-    const resp = await axios.post(`${serverUrl}/chat/summarize`, data, {
+    const resp = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/chat/summarize`, data, {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
     return resp.data.data;

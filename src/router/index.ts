@@ -37,8 +37,8 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to) => {
-  const { title } = to.meta
-  document.title = title ? `${title} - ${APP_NAME}` : APP_NAME
+  // const { title } = to.meta
+  document.title = `PaperQuery`
   progress.done()
 })
 
