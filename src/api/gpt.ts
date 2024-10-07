@@ -2,7 +2,7 @@ import axios from "@/plugins/axios";
 
 import { parsePack } from "@/utils/parsePack";
 
-import { apiKey, apiUrl } from "@/config/config.ts";
+import { apiKey, apiUrl } from "@/config/config";
 
 export const getAnswer = async (question: string) => {
   try {

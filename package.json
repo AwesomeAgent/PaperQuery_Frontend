@@ -47,7 +47,6 @@
     "moment": "^2.30.1",
     "pdfjs-dist": "^2.0.943",
     "pinia": "^2.1.7",
-    "primevue": "^4.0.0",
     "radix-vue": "^1.9.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",

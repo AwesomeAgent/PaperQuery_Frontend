@@ -6,7 +6,7 @@ import components from 'unplugin-vue-components/vite'
 import unocss from 'unocss/vite'
 import banner from 'vite-plugin-banner'
 import { createHtmlPlugin } from 'vite-plugin-html'
-import { envDir, sourceDir, manualChunks } from './scripts/build'
+import { envDir,  manualChunks } from './scripts/build'
 import pkg from './package.json'
 
 import tailwind from 'tailwindcss'
@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, envDir)
 
   return {
-    assetsInclude: ['**/*.pdf'],
+    assetsInclude: ['**/*.pdf','**/*.node'],
     /**
      * 管理环境变量的配置文件存放目录
      */
@@ -56,6 +56,7 @@ export default defineConfig(({ mode }) => {
     build: {
       target: 'es2022',
       rollupOptions: {
+        external: ['fsevents'],
         output: {
           /**
            * 如果要加密打包后的文件名，可以启用该项目
@@ -99,6 +100,7 @@ export default defineConfig(({ mode }) => {
       alias: {
         // '@': sourceDir,
         '@': path.resolve(__dirname, './src'),
+        // 'primevue': 'primevue/dist/primevue.esm.js',
       },
     },
 
