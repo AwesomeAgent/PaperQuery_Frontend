@@ -8,7 +8,7 @@ import 'element-plus/dist/index.css'
 import './input.css'
 
 // 全局样式
-import 'virtual:uno.css'
+// import 'virtual:uno.css'
 import '@/styles/var.less'
 import '@/styles/mixin.less'
 import '@/styles/global.less'

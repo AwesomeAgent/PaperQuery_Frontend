@@ -16,7 +16,7 @@ const username = ref('')
 const password = ref('')
 const router = useRouter()
 
-const url = ref('')
+const url = ref('http://8.137.13.113:8000')
 
 // 向后端发送登录请求并将用户信息存储到 Vuex 和 localStorage 中
 const Login = async () => {
@@ -62,10 +62,10 @@ const Login = async () => {
 
         <CardContent>
           <div class="grid items-center w-full gap-4">
-            <div class="flex flex-col space-y-1.5">
+            <!-- <div class="flex flex-col space-y-1.5">
               <Label for="url">网址</Label>
               <Input id="url" v-model="url" placeholder="url" required />
-            </div>
+            </div> -->
             <div class="flex flex-col space-y-1.5">
               <Label for="username">用户名</Label>
               <Input
