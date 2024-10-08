@@ -10,7 +10,7 @@
     "dev": "vite --mode dev --host",
     "dev:test": "vite --mode test --host",
     "dev:prod": "vite --mode prod --host",
-    "build": "vite build",
+    "build": "vite --mode prod build",
     "build:dev": "vue-tsc --noEmit && vite --mode dev build",
     "build:test": "vue-tsc --noEmit && vite --mode test build",
     "preview": "vite preview --host",

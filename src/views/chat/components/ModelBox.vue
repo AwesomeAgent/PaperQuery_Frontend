@@ -7,15 +7,16 @@
       trigger="click"
       :hide-on-click="true"
     >
-      GPT 4o mini
-      <template #dropdown>
+      <p class="font-bold text-sm">文心大模型</p>
+
+      <!-- <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item>Action 1</el-dropdown-item>
           <el-dropdown-item>Action 2</el-dropdown-item>
           <el-dropdown-item>Action 3</el-dropdown-item>
           <el-dropdown-item>Action 4</el-dropdown-item>
         </el-dropdown-menu>
-      </template>
+      </template> -->
     </el-dropdown>
   </div>
 </template>
