@@ -1,6 +1,9 @@
 <!-- 这是内容区域的中部 用于显示对话列表 -->
 <template>
-  <div ref="messageContainer" class="flex justify-center overflow-y-auto p-8">
+  <div
+    ref="messageContainer"
+    class="flex justify-center overflow-y-auto p-8 mb-14"
+  >
     <div class="w-1/2">
       <Empty v-show="messageList.length === 0" />
       <div v-for="message in messageList" :key="message.id" class="mb-10">

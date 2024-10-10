@@ -1,9 +1,9 @@
 <!-- 这是内容区域 -->
 <template>
-  <div class="flex flex-col h-full w-full">
+  <div class="flex flex-col overflow-hidden">
     <Header class="flex-none h-1/8" />
     <Main class="flex-1" />
-    <Footer class="flex-none h-1/8" />
+    <Footer class="h-1/8" />
   </div>
 </template>
 
