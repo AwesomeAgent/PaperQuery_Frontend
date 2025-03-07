@@ -44,7 +44,7 @@
    ```bash
    npm install
    # 或者使用 yarn
-   yarn install
+   yarn add
    ```
 
 4. 运行开发环境：
