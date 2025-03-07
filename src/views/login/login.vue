@@ -16,7 +16,7 @@ const username = ref('')
 const password = ref('')
 const router = useRouter()
 
-const url = ref('http://8.137.13.113:8000')
+const url = ref('http://localhost:8000')
 
 // 向后端发送登录请求并将用户信息存储到 Vuex 和 localStorage 中
 const Login = async () => {

@@ -1,37 +1,79 @@
-# vue3-ts-vite-starter
+# PaperQuery
 
-This template should help you quickly create a Vue 3 project based on Vite, using TypeScript as the development language by default.
+    PaperQuery 是一款知识库管理前端项目，旨在帮助用户高效管理和查询自己的文献、资料、笔记等知识内容。通过直观的展示和便捷的管理功能，用户可以更好地建立和维护自己的知识体系。
 
-这个模板应该能帮你快速创建一个基于 Vite 的 Vue 3 项目，默认使用 TypeScript 作为开发语言。
+## 特性
 
-## Usage
+- **知识库概览**：直观展示知识库中的知识数量、文档数量和向量数量，帮助用户快速了解知识库的整体情况。
 
-You can use a tool like [create-preset](https://github.com/awesome-starter/create-preset) to scaffold your project with this template.
+- **知识管理**：支持创建、编辑知识，并可通过可视化的方式展示知识之间的关系，帮助用户清晰地建立和维护知识体系。
 
-你可以使用 [create-preset](https://github.com/awesome-starter/create-preset) 之类的工具通过此模板来搭建你的项目。
+- **文档管理**：用户可以管理文档，包括文档列表展示、查看文档详情、删除不需要的文档等，提升文档管理效率。
 
-```bash
-npm create preset
-```
+- **文档对话**：支持与文档进行互动，包括划线翻译、文章推荐等功能，提供智能的交互体验。
 
-## Why Use This Template
+- **笔记记录**：支持Markdown语法编写笔记，支持笔记的上传、下载、实时同步及导出PDF，方便用户记录和备份重要内容。
 
-Why not use [create-vite](https://github.com/vitejs/vite/tree/main/packages/create-vite) to generate the basic template of the project?
+## 技术栈
 
-Because the basic template only has the simplest basic configuration, and the actual production project requires a lot of additional tool dependencies to improve development efficiency.
+- **前端框架**：Vue3
+- **UI 组件库**：ElementPlus
+- **路由管理**：Vue Router
+- **状态管理**：Pinia
+- **请求库**：Axios & Fetch
 
-为什么不使用 [create-vite](https://github.com/vitejs/vite/tree/main/packages/create-vite) 来生成项目的基础模板？
+## 安装和运行
 
-因为基础模板只有最简单的配置，而实际生产的项目里，需要很多额外的提高开发效率的工具依赖。
+    请注意，该前端项目需要搭配后端项目运行。
+    后端项目https://github.com/AwesomeAgent/PaperQuery_Backend.git
 
-## How to learn
+1. 克隆该项目到本地：
 
-If you are not very familiar with Vue 3 and TypeScript, or even have no contact at all, don’t worry, I have compiled an introductory guide, suitable for developers who do not have Vue 3 development experience to read, a book written based on the development process of a project , It is recommended to read and coding at the same time.
+   ```bash
+   git clone https://github.com/AwesomeAgent/PaperQuery_Frontend.git
+   ```
 
-> Btw: Currently only Chinese version, it is recommended to read through Google Translate with Chrome.
+2. 进入项目目录：
 
-See: [Learning Vue3](https://vue3.chengpeiquan.com/)
+   ```bash
+   cd PaperQuery_Frontend
+   ```
 
-如果你对 Vue 3 和 TypeScript 不是很熟悉，甚至完全没有接触过，不用担心，我整理了一个入门指南，适合没有 Vue 3 开发经验的开发者阅读，以一个项目的开发过程来写的一本书，建议一边 Reading ，一边 Coding 。
+3. 安装依赖：
 
-点击阅读：[Vue3入门指南与实战案例](https://vue3.chengpeiquan.com/)
+   ```bash
+   npm install
+   # 或者使用 yarn
+   yarn install
+   ```
+
+4. 运行开发环境：
+
+   ```bash
+   npm run dev
+   # 或者使用 yarn
+   yarn dev
+   ```
+
+5. 打开浏览器，访问 `http://localhost:8081`（端口号根据项目配置不同而有所变化）
+
+
+## 贡献
+
+欢迎提交 Pull Request，任何形式的贡献都非常欢迎！如果你有好的想法，或者发现了问题，请随时向我们反馈。
+
+1. Fork 本仓库
+2. 创建新的分支 (`git checkout -b feature/xxx`)
+3. 提交代码 (`git commit -am 'Add feature xxx'`)
+4. Push 到分支 (`git push origin feature/xxx`)
+5. 提交 Pull Request
+
+## 联系方式
+
+- 邮箱：812473076@qq.com
+- GitHub：https://github.com/hoyii
+
+## License
+
+该项目采用 [MIT License](LICENSE) 开源协议。
+

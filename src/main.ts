@@ -29,7 +29,7 @@ const pinia = createPinia()
 
 createApp(App)
   // .use(pinia) // 启用 Pinia
-  .use(store) // 启用 Vuex
+  .use(store)
   .use(pinia)
   .use(router) // 启用 Vue Router
   .use(ElementPlus) // 启用 Element Plus
